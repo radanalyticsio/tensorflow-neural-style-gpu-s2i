@@ -1,0 +1,31 @@
+#!/bin/bash -e
+#
+# S2I assemble script for the 'neural-style-s2i' image.
+# The 'assemble' script builds your application source so that it is ready to run.
+#
+# For more information refer to the documentation:
+#	https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
+#
+
+# If the 'neural-style-s2i' assemble script is executed with the '-h' flag, print the usage.
+if [[ "$1" == "-h" ]]; then
+	exec /usr/libexec/s2i/usage
+fi
+
+# Restore artifacts from the previous build (if they exist).
+#
+if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
+  echo "---> Restoring build artifacts..."
+  mv /tmp/artifacts/. ./
+fi
+
+echo "---> Installing application source..."
+ls  /tmp/src/.
+mkdir -p /opt/app-root/workspace
+#cp -R /tmp/src/ /opt/app-root/src/neural-style/
+mv /tmp/src/*  /opt/app-root/workspace
+echo "---> Building application from source..."
+# TODO: Add build steps for your application, eg npm install, bundle install, pip install, etc.
+
+wget http://www.vlfeat.org/matconvnet/models/beta16/imagenet-vgg-verydeep-19.mat -O /opt/app-root/workspace/imagenet-vgg-verydeep-19.mat
+chmod -R 777 /opt/app-root/workspace

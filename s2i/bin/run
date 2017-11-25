@@ -1,0 +1,39 @@
+#!/bin/bash -e
+#
+# S2I run script for the 'neural-style-s2i' image.
+# The run script executes the server that runs your application.
+#
+# For more information see the documentation:
+#	https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
+#
+cd /opt/app-root/workspace
+
+
+echo "STYLE_URL = "$STYLE_URL
+echo "STYLE_FILE_NAME = "$STYLE_FILE_NAME
+echo "CONTENT_URL = "$CONTENT_URL
+echo "CONTENT_FILE_NAME = "$CONTENT_FILE_NAME
+echo "ITERATIONS = "$ITERATIONS
+echo "WIDTH = "$WIDTH
+echo "MODEL_URL = "$IMAGE_FILE_NAME
+echo "PORT = "$PORT
+wget $STYLE_URL -O $(pwd)/$STYLE_FILE_NAME
+wget $CONTENT_URL -O $(pwd)/$CONTENT_FILE_NAME
+if [ -z $MODEL_URL ]
+then
+	echo "No model specified, beginning training"
+else
+	echo "Grabbing pre-trained model" 
+	wget $MODEL_URL -O $(pwd)/fns.ckpt
+fi
+
+start=`date +%s`
+python neural_style.py --content $CONTENT_FILE_NAME --styles $STYLE_FILE_NAME --output output.jpg --iterations $ITERATIONS --width $WIDTH
+end=`date +%s`
+runtime=$((end-start))
+echo $runtime > TIME.txt 2>&1
+python -m SimpleHTTPServer $PORT 
+#sleep 100000000
+
+
+
