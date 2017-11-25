@@ -2,7 +2,7 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "neural-style",
+        "name": "neural-style-gpu",
         "annotations": {
             "description": "neural-style",
             "tags": "tf-app"
@@ -36,7 +36,7 @@
                         "name": "latest",
                         "from": {
                             "kind": "DockerImage",
-                            "name": "rgeada/neural-style-s2i:latest"
+                            "name": "${S2I_IMAGE}"
                         }
                     }
                 ]
@@ -97,6 +97,25 @@
             "spec": {
                 "strategy": {
                     "type": "Rolling"
+                },
+                "affinity": {
+                    "nodeAffinity": {
+                        "requiredDuringSchedulingIgnoredDuringExecution": {
+                            "nodeSelectorTerms": [
+                                {
+                                    "matchExpressions": [
+                                        {
+                                            "key": "alpha.kubernetes.io/nvidia-gpu-name",
+                                            "operator": "In",
+                                            "values": [
+                                                "${GPU_NAME}"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
                 },
                 "triggers": [
                     {
@@ -160,6 +179,11 @@
                                 ],
                                 "name": "${APPLICATION_NAME}",
                                 "image": "${APPLICATION_NAME}:latest",
+                                "resources": {
+                                    "limits": {
+                                        "alpha.kubernetes.io/nvidia-gpu": "${GPU_LIMITS}"
+                                    }
+                                },
                                 "ports": [
                                     {
                                         "containerPort": 8080,
@@ -272,7 +296,24 @@
             "name": "PORT",
             "description": "port",
             "value": "8080",
-            "required": false
+            "required": true
+        },{
+            "name": "S2I_IMAGE",
+            "description": "S2I_IMAGE",
+            "value": "submod/neural-style-gpu-s2i:latest",
+            "required": true
+        },
+        {
+            "name": "GPU_NAME",
+            "description": "Name of GPU",
+            "value": "Tesla-M60",
+            "required": true
+        },
+        {
+            "name": "GPU_LIMITS",
+            "description": "Number of GPUs to allocate",
+            "value": "1",
+            "required": true
         }
     ]
 }
