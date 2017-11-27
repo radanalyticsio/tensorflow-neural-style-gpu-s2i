@@ -19,7 +19,8 @@ Larger values of `WIDTH` and `ITERATIONS` will increase the quality of the outpu
 
 ## Usage
 ```
-oc create template -f https://raw.githubusercontent.com/sub-mod/tensorflow-neural-style-gpu-s2i/master/template.json
+oc create template -f \
+https://raw.githubusercontent.com/radanalyticsio/tensorflow-neural-style-gpu-s2i/master/template.json
 ```
 To train with default image settings (style=[Great Wave off Kanagawa](https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Tsunami_by_hokusai_19th_century.jpg/1200px-Tsunami_by_hokusai_19th_century.jpg), content=[Chicago Skyline](https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Chicago_from_North_Avenue_Beach_June_2015_panorama_2.jpg/800px-Chicago_from_North_Avenue_Beach_June_2015_panorama_2.jpg), width=1000, iterations=1000):
 ```
