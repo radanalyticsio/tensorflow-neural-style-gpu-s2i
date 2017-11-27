@@ -2,7 +2,7 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "neural-style-gpu",
+        "name": "neural-style",
         "annotations": {
             "description": "neural-style",
             "tags": "tf-app"
@@ -155,8 +155,8 @@
                                         "name": "STYLE_URL",
                                         "value": "${STYLE_URL}"
                                     },{
-                                        "name": "CONTENT_URL",
-                                        "value": "${CONTENT_URL}"
+                                        "name": "INPUT_CONTENT_URL",
+                                        "value": "${INPUT_CONTENT_URL}"
                                     },{
                                         "name": "STYLE_FILE_NAME",
                                         "value": "${STYLE_FILE_NAME}"
@@ -257,7 +257,7 @@
             "required": true
         },
         {
-            "name": "CONTENT_URL",
+            "name": "INPUT_CONTENT_URL",
             "description": " input content image.",
             "value": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Chicago_from_North_Avenue_Beach_June_2015_panorama_2.jpg/800px-Chicago_from_North_Avenue_Beach_June_2015_panorama_2.jpg",
             "required": true

@@ -1,6 +1,8 @@
-# Neural-Style S2I
+# Neural-Style GPU S2I
 
 ## About
+
+This S2I image is meant to run on Openshift with GPU enabled.
 
 Neural Style, as outlined by Gatys, Ecker and Bethge in _[A Neural Algorithm of Artistic Style, 2015](https://arxiv.org/pdf/1508.06576v2.pdf)_, is a method of training convultional neural nets to produce images that can stylistically mimic paintings. Specifically, a **content** image is painted in the style of **style** image, so for example, you can take your favorite selfie (the content image) and paint it in the style of Van Gogh's Starry Night (the style image). For some great examples, check out [this document](https://github.com/lengstrom/fast-style-transfer/blob/master/README.md) by Logan Engstrom.  
 
@@ -8,7 +10,7 @@ This implementation is based off of a neural-style implementation by [Anish Atha
 
 ## Options
 * `STYLE_URL`: The URL at which your desired **style** image lives.
-* `CONTENT_URL`: The URL at which your desired **content** image lives.
+* `INPUT_CONTENT_URL`: The URL at which your desired **content** image lives.
 * `MODEL_URL`: If you already have a `.ckpt` file from a previous run of neural-style, you can point to it here.
 * `WIDTH`: The width of your output image. Height is automatically adjusted to maintain aspect ratio. 
 * `ITERATIONS`: The number of iterations to train over.
@@ -17,7 +19,7 @@ Larger values of `WIDTH` and `ITERATIONS` will increase the quality of the outpu
 
 ## Usage
 ```
-oc create template -f https://raw.githubusercontent.com/RobGeada/neural-style-s2i/master/template.json
+oc create template -f https://raw.githubusercontent.com/sub-mod/tensorflow-neural-style-gpu-s2i/master/template.json
 ```
 To train with default image settings (style=[Great Wave off Kanagawa](https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Tsunami_by_hokusai_19th_century.jpg/1200px-Tsunami_by_hokusai_19th_century.jpg), content=[Chicago Skyline](https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Chicago_from_North_Avenue_Beach_June_2015_panorama_2.jpg/800px-Chicago_from_North_Avenue_Beach_June_2015_panorama_2.jpg), width=1000, iterations=1000):
 ```
@@ -25,12 +27,15 @@ oc new-app --template neural-style
 ```
 To train with custom images:
 ```
-oc new-app --template neural-style --param=STYLE_URL=[url of style image] --param=CONTENT_URL=[url of content image] --param=WIDTH=1000 --param=ITERATIONS=1000
+oc new-app --template neural-style --param=STYLE_URL=[url of style image] \
+	--param=INPUT_CONTENT_URL=[url of content image] --param=WIDTH=1000 --param=ITERATIONS=1000
 ```
 
 To evaluate a pre-trained model:
 ```
-oc new-app --template neural-style --param=STYLE_URL=[url of style image] --param=CONTENT_URL=[url of content image] --param=MODEL_URL=[url of model] --param=WIDTH=1000 --param=ITERATIONS=1000
+oc new-app --template neural-style --param=STYLE_URL=[url of style image] \
+	--param=INPUT_CONTENT_URL=[url of content image] --param=MODEL_URL=[url of model] \
+	--param=WIDTH=1000 --param=ITERATIONS=1000
 ```
 
 ## Using Pre-Trained Models
