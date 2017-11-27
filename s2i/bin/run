@@ -11,14 +11,14 @@ cd /opt/app-root/workspace
 
 echo "STYLE_URL = "$STYLE_URL
 echo "STYLE_FILE_NAME = "$STYLE_FILE_NAME
-echo "CONTENT_URL = "$CONTENT_URL
+echo "INPUT_CONTENT_URL = "$INPUT_CONTENT_URL
 echo "CONTENT_FILE_NAME = "$CONTENT_FILE_NAME
 echo "ITERATIONS = "$ITERATIONS
 echo "WIDTH = "$WIDTH
 echo "MODEL_URL = "$IMAGE_FILE_NAME
 echo "PORT = "$PORT
 wget $STYLE_URL -O $(pwd)/$STYLE_FILE_NAME
-wget $CONTENT_URL -O $(pwd)/$CONTENT_FILE_NAME
+wget $INPUT_CONTENT_URL -O $(pwd)/$CONTENT_FILE_NAME
 if [ -z $MODEL_URL ]
 then
 	echo "No model specified, beginning training"
