@@ -50,7 +50,9 @@ RUN yum update -y && yum install -y epel-release vim tree wget curl dkms which g
     && ln -s /usr/local/cuda/lib64/stubs/libcuda.so /usr/local/cuda/lib64/stubs/libcuda.so.1
 
 RUN mkdir -p /opt/app-root/ && chown -R 1001:1001 /opt/app-root
-
+######################
+TODO remove local COPY
+#######################
 COPY ./tensorflow-1.4.0-cp27-cp27mu-linux_x86_64.whl /opt/app-root/tensorflow-1.4.0-cp27-cp27mu-linux_x86_64.whl
 RUN pip install /opt/app-root/tensorflow-1.4.0-cp27-cp27mu-linux_x86_64.whl
 RUN pip install scipy Pillow
