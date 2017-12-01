@@ -1,4 +1,4 @@
-FROM nvidia/cuda:9.0-cudnn7-devel-centos7
+FROM nvidia/cuda:9.0-cudnn7-runtime-centos7
 
 ENV BUILDER_VERSION 1.0
 
@@ -51,7 +51,7 @@ RUN yum update -y && yum install -y epel-release vim tree wget curl dkms which g
 
 RUN mkdir -p /opt/app-root/ && chown -R 1001:1001 /opt/app-root
 ######################
-TODO remove local COPY
+#TODO remove local COPY
 #######################
 COPY ./tensorflow-1.4.0-cp27-cp27mu-linux_x86_64.whl /opt/app-root/tensorflow-1.4.0-cp27-cp27mu-linux_x86_64.whl
 RUN pip install /opt/app-root/tensorflow-1.4.0-cp27-cp27mu-linux_x86_64.whl
